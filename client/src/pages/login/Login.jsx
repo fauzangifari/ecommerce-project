@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import {
   Card,
   CardHeader,
@@ -11,6 +10,8 @@ import {
   Button,
 } from "@material-tailwind/react";
 
+import { getAccount } from "../../utils/api";
+
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -19,17 +20,15 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.get("http://localhost:5000/users");
-      const users = response.data;
-
-      const customer = users.find(
+      const response = await getAccount();
+      const customer = response.find(
         (user) =>
           user.username === username &&
           user.password === password &&
           user.isAdmin === false
       );
 
-      const admin = users.find(
+      const admin = response.find(
         (user) =>
           user.username === username &&
           user.password === password &&
@@ -67,7 +66,7 @@ const Login = () => {
           {" "}
           <CardBody className="flex flex-col gap-4">
             <Input
-              label=",Username"
+              label="Username"
               size="lg"
               value={username}
               onChange={(e) => setUsername(e.target.value)}

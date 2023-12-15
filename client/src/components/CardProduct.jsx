@@ -11,7 +11,7 @@ import {
 const CardProduct = ({name, price, image, description}) => {
 
   return (
-    <div>
+    <div className="shadow-md">
       <Card className="w-96">
         <CardHeader shadow={false} floated={false} className="h-56">
           <img

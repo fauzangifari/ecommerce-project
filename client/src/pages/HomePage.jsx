@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 
-import Navbar from "../components/Navbar";
+import { getProduct } from "../utils/api";
+import Navbar from "../components/Navbar/Navbar";
 import Carousel from "../components/Carousel";
 import CardProduct from "../components/CardProduct";
 import Footer from "../components/Footer";
@@ -12,16 +12,12 @@ const Homepage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/products")
-      .then((res) => {
-        setProducts(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setError("Error fetching products.");
-        setLoading(false);
-      });
+    const fetchData = async () => {
+      const result = await getProduct();
+      setProducts(result);
+      setLoading(false);
+    };
+    fetchData();
   }, []);
 
   return (
@@ -29,7 +25,9 @@ const Homepage = () => {
       <Navbar />
       <div className="container mx-auto flex flex-col items-center p-10">
         <Carousel />
-        <h1 className="text-3xl font-semibold mt-10 text-black">Our Products</h1>
+        <h1 className="text-3xl font-semibold mt-10 text-black">
+          Our Products
+        </h1>
         {loading ? (
           <p>Loading...</p>
         ) : error ? (
