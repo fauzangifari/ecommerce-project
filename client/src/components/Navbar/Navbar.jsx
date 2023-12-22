@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { UilShoppingCart } from "@iconscout/react-unicons";
 import InputSearch from "./InputSearch";
 import { getAccount } from "../../utils/api";
+// import { loggedInUser } from "../../utils/auth";
 
 const Navbar = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -12,6 +13,7 @@ const Navbar = () => {
     const fetchData = async () => {
       try {
         const result = await getAccount();
+        console.log(result);
         setUser(result);
         setLoading(false);
       } catch (error) {
@@ -21,6 +23,10 @@ const Navbar = () => {
     };
     fetchData();
   }, []);
+
+  const handleLogin = (loggedInUser) => {
+    setUser(loggedInUser);
+  }
 
   return (
     <div className="navbar bg-light shadow-md sticky top-0 z-50 flex items-center justify-between py-4">

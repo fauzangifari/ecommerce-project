@@ -10,43 +10,24 @@ import {
   Button,
 } from "@material-tailwind/react";
 
-import { getAccount } from "../../utils/api";
+import { sendAccount } from "../../utils/api";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [validating, setValidating] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await getAccount();
-      const customer = response.find(
-        (user) =>
-          user.username === username &&
-          user.password === password &&
-          user.isAdmin === false
-      );
-
-      const admin = response.find(
-        (user) =>
-          user.username === username &&
-          user.password === password &&
-          user.isAdmin === true
-      );
-
-      if (customer) {
-        alert("User login successful!");
-        window.location.href = "/";
-      } else if (admin) {
-        alert("Admin login successful! Redirecting to dashboard...");
-        window.location.href = "/dasboard";
-        
-      } else {
-        alert("Login failed. Please try again.");
+    const send = async () => {
+      try {
+        const result = await sendAccount(username, password);
+        setValidating(result);
+      } catch (error) {
+        setError(error);
+        setLoading(false);
       }
-    } catch (error) {
-      console.log(error);
     }
   };
 

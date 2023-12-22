@@ -28,5 +28,7 @@ app.get('/', (req, res) => {
 app.use(UserRoute);
 app.use(ProductRoute);
 
-app.listen(5000, () => console.log('Server Running'));
+const port = process.env.PORT || 5000;
+
+app.listen(port, () => console.log(`Server Running at port ${port}`));
 
